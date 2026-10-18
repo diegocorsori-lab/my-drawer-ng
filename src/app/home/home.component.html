@@ -1,0 +1,52 @@
+<ActionBar class="action-bar" backgroundColor="#3F51B5" color="white">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *, auto, auto, auto">
+    <!-- Columna 0: Ícono del menú lateral -->
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()" col="0" verticalAlignment="center" margin="0 10 0 10" fontSize="20"></Label>
+    
+    <!-- Columna 1: Título de la pantalla -->
+    <Label class="action-bar-title" text="Inicio - Biblioteca" col="1" verticalAlignment="center" fontSize="20"></Label>
+
+    <!-- Columna 2: Ícono para tomar foto con la cámara -->
+    <Label text="📷" col="2" fontSize="20" verticalAlignment="center" padding="0 8" (tap)="tomarFoto()"></Label>
+
+    <!-- Columna 3: Ícono para compartir la imagen del logo desde App_Resources -->
+    <Label text="🖼️" col="3" fontSize="20" verticalAlignment="center" padding="0 8" (tap)="compartirLogoApp()"></Label>
+
+    <!-- Columna 4: Ícono para abrir el Composer de Mail -->
+    <Label text="📧" col="4" fontSize="20" verticalAlignment="center" padding="0 15 0 5" (tap)="enviarCorreoFeedback()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView class="page page-content">
+  <StackLayout padding="15">
+        
+    <!-- Previsualización de la foto tomada con la cámara -->
+    <StackLayout *ngIf="fotoCapturada" backgroundColor="#E8EAF6" padding="10" marginBottom="15" borderRadius="8">
+      <Label text="📷 Foto Capturada:" fontSize="14" fontWeight="bold" color="#3F51B5" marginBottom="5"></Label>
+      <Image [src]="fotoCapturada" height="200" stretch="aspectFit"></Image>
+    </StackLayout>
+
+    <!-- Sección de opiniones tradicional -->
+    <Label text="Opiniones de Usuarios:" fontSize="16" fontWeight="bold" margin="0 0 10 0"></Label>
+    <GridLayout *ngFor="let op of opiniones" columns="*, auto, auto" class="p-10 border-bottom" marginBottom="10">
+      <Label [text]="op.texto" col="0" textWrap="true" fontSize="13"></Label>
+      <Label col="1" text="👍 {{ op.upvotes }}" (tap)="onUpvote(op)" padding="0 10" color="#2196F3"></Label>
+      <Label col="2" text="👎 {{ op.downvotes }}" (tap)="onDownvote(op)" padding="0 10" color="#FF9800"></Label>
+    </GridLayout>
+
+    <!-- SECCIÓN DE REDUX: Listado directo de lecturas pendientes -->
+    <StackLayout marginTop="20" backgroundColor="#f0f0f0" padding="10">
+      <Label text="📖 Libros para Leer" fontSize="16" fontWeight="bold" color="#3F51B5" marginBottom="10"></Label>
+            
+      <!-- Recorremos el Observable usando ngFor con el pipe async -->
+      <StackLayout *ngFor="let tituloLibro of librosLeidos$ | async">
+        <Label [text]="'• ' + tituloLibro" fontSize="15" padding="8" color="#333333"></Label>
+      </StackLayout>
+
+      <!-- Mensaje opcional si está vacío -->
+      <Label *ngIf="(librosLeidos$ | async)?.length === 0" text="No hay libros marcados para leer todavía." fontSize="13" fontStyle="italic" color="#666666" padding="5"></Label>
+    </StackLayout>
+
+  </StackLayout>
+</ScrollView>

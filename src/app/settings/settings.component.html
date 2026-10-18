@@ -1,0 +1,36 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+    <Label class="action-bar-title" text="Settings" col="1"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout class="page__content">
+    
+    <!-- Card de información del usuario -->
+    <StackLayout class="card">
+      <Label class="card-title" text="Perfil de Usuario"></Label>
+      
+      <GridLayout columns="auto, *" class="user-info">
+        <Label col="0" class="user-label" text="Nombre de Usuario:"></Label>
+        <Label col="1" class="user-value" [text]="nombreUsuario"></Label>
+      </GridLayout>
+      
+      <Button 
+        class="btn-edit-icon" 
+        text="&#xf044;"
+        (tap)="irAEditar()">
+      </Button>
+      
+    </StackLayout>
+
+    <StackLayout class="card">
+      <Label class="card-title" text="Acerca de"></Label>
+      <Label class="info-text" text="Librería App v1.0.0"></Label>
+      <Label class="info-text" text="© 2024 Tu Librería"></Label>
+    </StackLayout>
+
+  </StackLayout>
+</ScrollView>

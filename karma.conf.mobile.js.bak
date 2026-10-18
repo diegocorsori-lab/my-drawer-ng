@@ -1,0 +1,50 @@
+const path = require('path');
+
+module.exports = function (config) {
+  const options = {
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+      { pattern: 'src/test.ts', watched: false }
+    ],
+    exclude: [],
+    preprocessors: {},
+    
+    // Declaración explícita de plugins
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-nativescript-launcher'),
+      require('karma-junit-reporter')
+    ],
+    
+    reporters: ['progress', 'junit'],
+    
+    junitReporter: {
+      outputDir: __dirname, // Raíz absoluta del proyecto
+      outputFile: 'TESTS.XML',
+      suite: '',
+      useBrowserName: false
+    },
+    
+    hostname: '192.168.1.70',
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: false,
+    
+    // Forzar Android como navegador por defecto
+    browsers: ['android'],
+    
+    customLaunchers: {
+      android: {
+        base: 'NS',
+        platform: 'android'
+      }
+    },
+    
+    // Terminar al acabar la prueba para generar el XML
+    singleRun: true
+  };
+
+  config.set(options);
+};

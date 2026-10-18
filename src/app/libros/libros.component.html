@@ -1,0 +1,36 @@
+<ActionBar title="Módulo Libros">
+  <!-- 1. Agregamos el evento tap para abrir el menú lateral -->
+  <NavigationButton text="Menú" android.systemIcon="ic_menu_sort_by_size" (tap)="onDrawerButtonTap()"></NavigationButton>
+</ActionBar>
+
+<StackLayout class="page__content">
+  <Label [text]="mensajeAndroid" class="h2 text-center my-bold-label"></Label>
+
+  <!-- 2. Agregamos la barra de búsqueda -->
+  <SearchBar 
+      hint="Buscar libro..." 
+      (submit)="onBuscar($event)" 
+      (clear)="onLimpiar()">
+  </SearchBar>
+
+  <ScrollView height="100%">
+      <StackLayout>
+          <!-- 3. Agregamos el evento (longPress) para el diálogo y la animación -->
+          <StackLayout *ngFor="let libro of librosList" 
+                       class="list-group-item"
+                       [nsRouterLink]="['/libros/detalle', libro.id]"
+                       (longPress)="onItemLongPress($event, libro)">
+            
+            <GridLayout columns="*, auto">
+                <StackLayout col="0">
+                    <Label [text]="libro.titulo" class="h3"></Label>
+                    <Label [text]="libro.autor" class="body"></Label>
+                </StackLayout>
+                
+                <Label text="➔" col="1" class="h3 text-primary text-right"></Label>
+            </GridLayout>
+
+          </StackLayout>
+      </StackLayout>
+  </ScrollView>
+</StackLayout>

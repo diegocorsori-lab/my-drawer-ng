@@ -1,0 +1,52 @@
+<ActionBar class="action-bar" backgroundColor="#3F51B5" color="white">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    
+    <!-- Botón del menú lateral -->
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()" col="0" verticalAlignment="center" margin="0 10 0 10" fontSize="20"></Label>
+    
+    <!-- Título de la pantalla -->
+    <Label class="action-bar-title" text="Featured" col="1" verticalAlignment="center" fontSize="20"></Label>
+    
+  </GridLayout>
+</ActionBar>
+
+<GridLayout rows="auto, *" class="page page-content">
+    
+    <!-- Tu cuadro animable original arriba -->
+    <StackLayout row="0" verticalAlignment="center" padding="15">
+        <Label class="page-icon fa" text="&#xf005;" horizontalAlignment="center"></Label>
+        <Label class="page-placeholder" text="Libros Favoritos Guardados" horizontalAlignment="center"></Label>
+
+        <!-- Cuadro animable con longPress -->
+        <GridLayout backgroundColor="#3F51B5" width="200" height="200" marginTop="15" 
+            (longPress)="onLongPress($event)" horizontalAlignment="center">
+            
+            <Image class="img-rounded" src="res://icon" stretch="none"></Image>
+            
+        </GridLayout>
+    </StackLayout>
+
+    <!-- Listado dinámico de favoritos con la integración de Redux (LeerAhora) -->
+    <ListView row="1" class="list-group" [items]="favoritosList" height="100%">
+        <ng-template let-fav="item">
+            <!-- 3 columnas: Columna 0 para la info del libro, Columna 1 para "Leer", Columna 2 para Favorito -->
+            <GridLayout columns="*, auto, auto" class="list-group-item p-10">
+                
+                <!-- Información del libro favorito (Columna 0) -->
+                <FlexboxLayout col="0" flexDirection="row" alignItems="center">
+                    <Image [src]="fav.imagen" class="thumb img-circle" width="40" height="40" stretch="aspectFill" marginRight="10"></Image>
+                    <Label [text]="fav.titulo" class="list-group-item-heading" verticalAlignment="center"></Label>
+                </FlexboxLayout>
+                
+                <!-- Botón / Icono de "Leer" que despacha la action de Redux (Columna 1) -->
+                <Label col="1" text="📖 Leer" fontSize="15" color="#3F51B5" fontWeight="bold" verticalAlignment="center" padding="0 10" (tap)="marcarLeerAhora(fav.titulo)"></Label>
+
+                <!-- Icono indicador de favorito (Columna 2) -->
+                <Label col="2" text="❤️" fontSize="20" verticalAlignment="center" horizontalAlignment="right" padding="0 5"></Label>
+                
+            </GridLayout>
+        </ng-template>
+    </ListView>
+
+</GridLayout>

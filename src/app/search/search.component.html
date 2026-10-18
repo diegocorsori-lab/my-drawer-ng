@@ -1,0 +1,63 @@
+<ActionBar class="action-bar" backgroundColor="#3F51B5" color="white">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()" col="0" verticalAlignment="center" margin="0 10 0 10"></Label>
+    <Label class="action-bar-title" text="Search" col="1" verticalAlignment="center"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout #layout rows="auto, auto, *" class="page__content">
+  
+  <Label row="0" class="page__content-icon fas" text="&#xf002;" fontSize="100" color="#E0E0E0" horizontalAlignment="center" marginTop="120" marginBottom="20"></Label>
+
+  <StackLayout row="1" margin="15">
+    <TextField [(ngModel)]="textoBusqueda" 
+               appSinEspeciales 
+               #busqueda="ngModel" 
+               hint="Buscar libro (solo letras y números)..." 
+               (returnPress)="buscarAhora(textoBusqueda)"
+               class="input input-border"></TextField>
+        
+    <Label *ngIf="busqueda?.errors?.caracteresEspeciales" 
+           text="⚠️ No se permiten símbolos como @, #, $." 
+           color="red" 
+           fontWeight="bold"
+           fontSize="14" 
+           marginTop="5"></Label>
+  </StackLayout>
+
+  <PullToRefresh row="2" (refresh)="onRefresh($event)">
+    <ListView class="list-group" [items]="resultados" height="100%">
+      <ng-template let-x="item">
+        <!-- Definimos 3 columnas: contenido del libro (*), compartir (auto) y estrella (auto) -->
+        <GridLayout columns="*, auto, auto" class="list-group-item p-10">
+          
+          <!-- Columna 0: Imagen, Título y Autor -->
+          <FlexboxLayout col="0" flexDirection="row" alignItems="center" (longPress)="onItemLongPress($event, x)" (tap)="irADetalle(x.id)">
+            <Image [src]="x.imagen" class="thumb img-circle" width="50" stretch="aspectFill" marginRight="10"></Image>
+            <Label [text]="x.titulo + ' - ' + x.autor" class="list-group-item-heading" verticalAlignment="center"></Label>
+          </FlexboxLayout>
+
+          <!-- Columna 1: Ícono discreto de Compartir -->
+          <Label col="1" 
+                 text="📤" 
+                 fontSize="20" 
+                 verticalAlignment="center" 
+                 padding="5 10" 
+                 (tap)="compartirLibroRedes(x)">
+          </Label>
+
+          <!-- Columna 2: Ícono de favoritos (Estrella) -->
+          <Label col="2" 
+                 text="⭐" 
+                 fontSize="24" 
+                 verticalAlignment="center" 
+                 padding="0 10" 
+                 (tap)="agregarAFavoritos(x)">
+          </Label>
+                    
+        </GridLayout>
+      </ng-template>
+    </ListView>
+  </PullToRefresh>
+</GridLayout>

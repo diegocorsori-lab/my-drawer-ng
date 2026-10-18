@@ -1,0 +1,86 @@
+<GridLayout rows="auto, *" class="page">
+    <!-- Header -->
+    <GridLayout row="0" columns="auto, *" class="header" backgroundColor="#3f51b5" padding="16">
+        <Label col="0" text="&#xe5c4;" class="material-icons" fontSize="24" color="white" (tap)="onBackButtonTap()"></Label>
+        <Label col="1" text="Editar Usuario" fontSize="20" fontWeight="bold" color="white" marginLeft="10"></Label>
+    </GridLayout>
+
+    <!-- Contenido -->
+    <ScrollView row="1">
+        <StackLayout class="edit-container" padding="16">
+            
+            <StackLayout class="card" backgroundColor="white" borderRadius="8" padding="20">
+                <Label text="Nombre de Usuario" fontSize="18" fontWeight="bold" color="#333" marginBottom="8"></Label>
+                <Label text="Ingresa el nombre que se mostrará en tu perfil" fontSize="14" color="#666" marginBottom="16"></Label>
+                
+                <!-- Campo de texto -->
+                <TextField 
+                    [text]="nombreUsuario"
+                    hint="Ej: Juan Pérez"
+                    borderWidth="1"
+                    [borderColor]="isTouched && !isValid ? '#f44336' : '#ccc'"
+                    borderRadius="8"
+                    padding="12"
+                    fontSize="16"
+                    marginBottom="8"
+                    [backgroundColor]="isTouched && !isValid ? '#fff5f5' : '#fafafa'"
+                    (textChange)="onTextChange($event)"
+                    maxLength="20"
+                    autocorrect="false"
+                    autocapitalizationType="words"
+                    returnKeyType="done"
+                    (returnPress)="guardar()">
+                </TextField>
+                
+                <!-- Mensaje de error -->
+                <StackLayout *ngIf="isTouched && errorMessage" backgroundColor="#ffebee" borderRadius="4" padding="8" marginBottom="8" orientation="horizontal">
+                    <Label text="&#xe002;" fontSize="16" color="#f44336" marginRight="8"></Label>
+                    <Label [text]="errorMessage" fontSize="14" color="#f44336" textWrap="true"></Label>
+                </StackLayout>
+                
+                <!-- Indicador de éxito -->
+                <StackLayout *ngIf="isTouched && isValid" backgroundColor="#e8f5e8" borderRadius="4" padding="8" marginBottom="8" orientation="horizontal">
+                    <Label text="&#xe5ca;" fontSize="16" color="#4caf50" marginRight="8"></Label>
+                    <Label text="Nombre válido" fontSize="14" color="#4caf50"></Label>
+                </StackLayout>
+                
+                <!-- Contador de caracteres -->
+                <GridLayout columns="*, auto" marginBottom="16">
+                    <Label col="0" text="Mínimo 3 caracteres" fontSize="12" color="#999"></Label>
+                    <Label col="1" [text]="nombreUsuario.length + '/20'" fontSize="12" color="#999"></Label>
+                </GridLayout>
+                
+                <!-- Botones -->
+                <GridLayout columns="*, *" marginTop="16">
+                    <Button 
+                        col="0" 
+                        text="Guardar" 
+                        backgroundColor="#4caf50"
+                        color="white"
+                        fontSize="16"
+                        fontWeight="bold"
+                        padding="12"
+                        borderRadius="8"
+                        marginRight="8"
+                        [isEnabled]="isValid"
+                        (tap)="guardar()">
+                    </Button>
+                    
+                    <Button 
+                        col="1" 
+                        text="Cancelar" 
+                        backgroundColor="#f44336"
+                        color="white"
+                        fontSize="16"
+                        fontWeight="bold"
+                        padding="12"
+                        borderRadius="8"
+                        marginLeft="8"
+                        (tap)="cancelar()">
+                    </Button>
+                </GridLayout>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</GridLayout>
